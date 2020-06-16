@@ -24,9 +24,10 @@ const PatientSchema = new Schema(
       type: String,
       default: '',
     },
+    //todo => Review later
     date: {
-      type: Date,
-      default: Date.now(),
+      type: String,
+      default: Date(),
     },
     favPsychologists: [
       {
@@ -52,6 +53,6 @@ const PatientSchema = new Schema(
   }
 );
 
-const Patient = model<PatientDTO>('Store', PatientSchema);
+const Patient = model<PatientDTO>('Patient', PatientSchema);
 
 export default Patient;
