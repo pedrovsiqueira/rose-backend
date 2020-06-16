@@ -4,14 +4,14 @@ mongoose.Promise = global.Promise;
 
 export default async () => {
   try {
-    const response = await mongoose.connect('mongodb://0.0.0.0:27017/rose', {
+    const response = await mongoose.connect(`${process.env.MONGODB}`, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useCreateIndex: true,
       useFindAndModify: false,
     });
 
-    console.log(`connected: ${response.connections[0].name}`);
+    console.log(`db connection: ${response.connections[0].name}`);
   } catch (error) {
     console.error('failed to connect to db', error);
   }
