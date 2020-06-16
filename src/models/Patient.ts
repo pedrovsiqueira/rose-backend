@@ -1,14 +1,6 @@
 import { Schema, Document, model } from 'mongoose';
 
-interface PatientDTO extends Document {
-  name: string;
-  email: string;
-  password: string;
-  avatar: string;
-  date: number;
-  favPsychologists: object;
-  appointments: object;
-}
+type PatientDTO = Document & {};
 
 const PatientSchema = new Schema(
   {
@@ -46,6 +38,12 @@ const PatientSchema = new Schema(
       {
         type: Schema.Types.ObjectId,
         ref: 'Appointment',
+      },
+    ],
+    reviews: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Review',
       },
     ],
   },
