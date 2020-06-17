@@ -11,8 +11,13 @@ interface Patient {
   password: string;
 }
 
+type CreateResponse = Patient | Fail;
+
 export default class PatientController {
-  public async create(req: Request, res: Response): Promise<Response<Fail | Patient>> {
+  public async create(
+    req: Request,
+    res: Response
+  ): Promise<Response<CreateResponse>> {
     const { email, password } = req.body;
 
     if (!email) {
