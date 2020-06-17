@@ -1,8 +1,18 @@
 import { Request, Response } from 'express';
 import Patient from '../models/Patient';
 
+interface Fail {
+  message: string;
+}
+
+interface Patient {
+  _id: string;
+  email: string;
+  password: string;
+}
+
 export default class PatientController {
-  public async create(req: Request, res: Response) {
+  public async create(req: Request, res: Response): Promise<Response<Fail | Patient>> {
     const { email, password } = req.body;
 
     if (!email) {
@@ -14,9 +24,9 @@ export default class PatientController {
     }
 
     if (password.length < 6) {
-      return res
-        .status(400)
-        .json({ message: 'Senha deve ter pelo menos 6 caracteres' });
+      return res.status(400).json({
+        message: 'Senha deve ter pelo menos 6 caracteres',
+      });
     }
 
     try {
