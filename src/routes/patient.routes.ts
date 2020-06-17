@@ -1,7 +1,7 @@
-import { Router } from 'express'
+import { Router } from 'express';
+import PatientController from '../controllers/patientController';
 
+const router = Router();
+const patientController = new PatientController();
 
-const router = Router()
-const patientController = new PatientController()
-
-router.get('', )
+router.post('/signup/', patientController.create);
