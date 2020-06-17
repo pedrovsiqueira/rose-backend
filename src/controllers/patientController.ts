@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import Patient from '../models/Patient';
+import bcrypt from 'bcryptjs';
 
 interface Fail {
   message: string;
@@ -20,11 +21,7 @@ export default class PatientController {
   ): Promise<Response<CreateResponse>> {
     const { email, password } = req.body;
 
-    if (!email) {
-      return res.status(400).json({ message: 'Email ou senha não informados' });
-    }
-
-    if (!password) {
+    if (!email || !password) {
       return res.status(400).json({ message: 'Email ou senha não informados' });
     }
 
@@ -34,9 +31,17 @@ export default class PatientController {
       });
     }
 
+    const salt = bcrypt.genSaltSync(10);
+    const hash = bcrypt.hashSync(password, salt);
+
+    const newUser = {
+      email,
+      password: hash,
+    };
+    
     try {
-      const newUser = await Patient.create(req.body);
-      return res.status(201).json(newUser);
+      const response = await Patient.create(newUser);
+      return res.status(201).json(response);
     } catch (error) {
       console.log(error);
       return res.status(500).json({ message: 'Falha ao criar o usuário' });
