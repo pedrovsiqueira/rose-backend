@@ -13,13 +13,13 @@ interface Psychologist {
   crp: string;
 }
 
-type CreateResponse = Psychologist | Fail;
+type PsychologistResponse = Psychologist | Fail;
 
 export default class PsychologistController {
   public async create(
     req: Request,
     res: Response
-  ): Promise<Response<CreateResponse>> {
+  ): Promise<Response<PsychologistResponse>> {
     const { email, password, crp } = req.body;
 
     if (!email || !password) {
@@ -51,6 +51,42 @@ export default class PsychologistController {
     } catch (error) {
       console.log(error);
       return res.status(500).json({ message: 'Falha ao criar o usuário' });
+    }
+  }
+
+  public async find(
+    req: Request,
+    res: Response
+  ): Promise<Response<PsychologistResponse>> {
+    try {
+      const response = await Psychologist.find({}).select('-password');
+      if (response.length === 0) {
+        return res
+          .status(200)
+          .json({ message: 'Nenhum profissional encontrado' });
+      }
+      return res.status(200).json(response);
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({
+        message: 'Falha na requisição. Tente novamente',
+      });
+    }
+  }
+
+  public async findById(
+    req: Request,
+    res: Response
+  ): Promise<Response<PsychologistResponse>> {
+    const { id } = req.params;
+    try {
+      const response = await Psychologist.findById(id).select('-password');
+      return res.status(200).json(response);
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({
+        message: 'Falha na requisição. Tente novamente',
+      });
     }
   }
 }
