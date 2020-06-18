@@ -6,7 +6,6 @@ const PsychologistSchema = new Schema(
   {
     name: {
       type: String,
-      required: true,
     },
     email: {
       type: String,
@@ -26,30 +25,26 @@ const PsychologistSchema = new Schema(
     whatsapp: {
       type: String,
     },
-    CRP: {
+    crp: {
       type: String,
       required: true,
     },
     workingHours: {
       startTime: {
         type: String,
-        required: true,
       },
       endTime: {
         type: String,
-        required: true,
       },
     },
     education: [
       {
         type: String,
-        required: true,
       },
     ],
     specialties: [
       {
         type: String,
-        required: true,
       },
     ],
     experience: [
@@ -59,7 +54,6 @@ const PsychologistSchema = new Schema(
     ],
     price: {
       type: Number,
-      required: true,
     },
     virtualRoom: {
       type: String,
@@ -69,7 +63,6 @@ const PsychologistSchema = new Schema(
     },
     shortDescription: {
       type: String,
-      required: true,
     },
     //todo => Review later
     appointments: [
