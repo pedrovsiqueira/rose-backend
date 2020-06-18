@@ -4,7 +4,9 @@ import AppointmentController from '../controllers/appointmentController';
 const router = Router();
 const appointmentController = new AppointmentController();
 
-router.post('/appointments', appointmentController.find);
+router.get('/appointments', appointmentController.find);
+router.get('/:id', appointmentController.findById);
+
 router.post('/newappointment', appointmentController.create);
 
 export default router;
