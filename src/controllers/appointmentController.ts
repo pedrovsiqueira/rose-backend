@@ -12,13 +12,13 @@ interface Appointment {
   psychologist: Object;
 }
 
-type FindResponse = Appointment | Fail;
+type AppointmentResponse = Appointment | Fail;
 
 export default class AppointmentController {
   public async create(
     req: Request,
     res: Response
-  ): Promise<Response<FindResponse>> {
+  ): Promise<Response<AppointmentResponse>> {
     const { startTime, endTime, psychologist } = req.body;
 
     const appointment = {
@@ -51,7 +51,7 @@ export default class AppointmentController {
   public async find(
     req: Request,
     res: Response
-  ): Promise<Response<FindResponse>> {
+  ): Promise<Response<AppointmentResponse>> {
     try {
       const response = await Appointment.find({});
       if (response.length === 0) {
@@ -62,25 +62,43 @@ export default class AppointmentController {
       return res.status(200).json(response);
     } catch (error) {
       console.log(error);
-      return res
-        .status(500)
-        .json({ message: 'Falha na requisição. Tente novamente' });
+      return res.status(500).json({
+        message: 'Falha na requisição. Tente novamente',
+      });
     }
   }
 
   public async findById(
     req: Request,
     res: Response
-  ): Promise<Response<FindResponse>> {
+  ): Promise<Response<AppointmentResponse>> {
     const { id } = req.params;
     try {
       const response = await Appointment.findById(id);
       return res.status(200).json(response);
     } catch (error) {
       console.log(error);
+      return res.status(500).json({
+        message: 'Falha na requisição. Tente novamente',
+      });
+    }
+  }
+
+  public async delete(
+    req: Request,
+    res: Response
+  ): Promise<Response<AppointmentResponse>> {
+    const { id } = req.params;
+    try {
+      const response = await Appointment.findByIdAndDelete(id);
       return res
-        .status(500)
-        .json({ message: 'Falha na requisição. Tente novamente' });
+        .status(202)
+        .json({ message: `agendamento excluido com sucesso` });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({
+        message: 'Falha na requisição. Tente novamente',
+      });
     }
   }
 }

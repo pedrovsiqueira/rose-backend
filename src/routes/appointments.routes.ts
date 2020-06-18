@@ -9,4 +9,6 @@ router.get('/:id', appointmentController.findById);
 
 router.post('/newappointment', appointmentController.create);
 
+router.delete('/:id', appointmentController.delete);
+
 export default router;
