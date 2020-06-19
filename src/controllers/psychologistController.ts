@@ -85,7 +85,8 @@ export default class PsychologistController {
     res: Response
   ): Promise<Response<PsychologistResponse>> {
     try {
-      const response = await Psychologist.find({}).select('-password');
+      const response = await Psychologist.find({});
+      // .select('-password');
       if (response.length === 0) {
         return res
           .status(200)
@@ -106,13 +107,32 @@ export default class PsychologistController {
   ): Promise<Response<PsychologistResponse>> {
     const { id } = req.params;
     try {
-      const response = await Psychologist.findById(id).select('-password');
+      const response = await Psychologist.findById(id);
+      // .select('-password');
       return res.status(200).json(response);
     } catch (error) {
       console.log(error);
       return res.status(500).json({
         message: 'Falha na requisição. Tente novamente',
       });
+    }
+  }
+
+  public async login(req: Request, res: Response) {
+    const { email, password } = req.body;
+    try {
+      const psychologist: any = await Psychologist.findOne({ email });
+
+      const isMatch = await bcrypt.compare(password, psychologist.password);
+      if (!isMatch) {
+        return res.status(400).json({
+          message: 'Email ou senha inválidos',
+        });
+      }
+
+      return res.status(200).send({ message: 'Login efetuado com sucesso' });
+    } catch (error) {
+      console.log(error);
     }
   }
 }

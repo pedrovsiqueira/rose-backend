@@ -8,5 +8,6 @@ router.get('/psychologists', psychologistController.find);
 router.get('/:id', psychologistController.findById);
 
 router.post('/signup', psychologistController.create);
+router.post('/login', psychologistController.login);
 
 export default router;
