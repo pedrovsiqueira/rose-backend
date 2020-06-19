@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import Psychologist from '../models/Psychologist';
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
 interface Fail {
   message: string;
@@ -13,13 +14,18 @@ interface Psychologist {
   crp: string;
 }
 
-type PsychologistResponse = Psychologist | Fail;
+type MainResponse = {
+  user: Psychologist;
+  token?: string;
+};
+
+type PsychologistResponse = MainResponse | Fail;
 
 export default class PsychologistController {
   public async create(
     req: Request,
     res: Response
-  ): Promise<Response<PsychologistResponse>> {
+  ): Promise<Response<PsychologistResponse> | undefined> {
     const { email, password, crp } = req.body;
 
     if (!email || !password) {
@@ -46,8 +52,28 @@ export default class PsychologistController {
     };
 
     try {
-      const response = await Psychologist.create(newUser);
-      return res.status(201).json(response);
+      const user = await Psychologist.create(newUser);
+
+      const payload = {
+        id: user._id,
+      };
+
+      jwt.sign(
+        payload,
+        `${process.env.JWT_SECRET}`,
+        {
+          expiresIn: 8640000000,
+        },
+        (err, token) => {
+          if (err) {
+            console.log(err);
+            return res
+              .status(500)
+              .json({ message: 'Erro na geração do token' });
+          }
+          return res.status(201).json({ user, token });
+        }
+      );
     } catch (error) {
       console.log(error);
       return res.status(500).json({ message: 'Falha ao criar o usuário' });
