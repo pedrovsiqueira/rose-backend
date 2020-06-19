@@ -69,7 +69,7 @@ export default class PsychologistController {
             console.log(err);
             return res
               .status(500)
-              .json({ message: 'Erro na geração do token' });
+              .json({ message: 'Erro na geração do token de signup' });
           }
           return res.status(201).json({ user, token });
         }
@@ -113,6 +113,44 @@ export default class PsychologistController {
       return res.status(500).json({
         message: 'Falha na requisição. Tente novamente',
       });
+    }
+  }
+
+  public async login(req: Request, res: Response) {
+    const { email, password } = req.body;
+    try {
+      const psychologist: any = await Psychologist.findOne({ email });
+
+      const isMatch = await bcrypt.compare(password, psychologist.password);
+      if (!isMatch) {
+        return res.status(400).json({
+          message: 'Email ou senha inválidos',
+        });
+      }
+
+      const payload = {
+        id: psychologist._id,
+      };
+
+      jwt.sign(
+        payload,
+        `${process.env.JWT_SECRET}`,
+        {
+          expiresIn: 8640000000,
+        },
+        (err, token) => {
+          if (err) {
+            console.log(err);
+            return res
+              .status(500)
+              .json({ message: 'Erro na geração do token de login' });
+          }
+          return res.status(200).json({ psychologist, token });
+        }
+      );
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: 'Falha no login' });
     }
   }
 }
