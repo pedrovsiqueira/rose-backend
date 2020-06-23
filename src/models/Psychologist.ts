@@ -1,6 +1,7 @@
 import { Schema, Document, model } from 'mongoose';
+import { PsychologistDTO } from '../dtos/PsychologistDTO';
 
-type PsychologistDTO = Document & {};
+type PsychologistSchema = Document & PsychologistDTO;
 
 const PsychologistSchema = new Schema(
   {
@@ -31,10 +32,10 @@ const PsychologistSchema = new Schema(
     },
     workingHours: {
       startTime: {
-        type: String,
+        type: Date,
       },
       endTime: {
-        type: String,
+        type: Date,
       },
     },
     education: [
@@ -83,6 +84,9 @@ const PsychologistSchema = new Schema(
   }
 );
 
-const Psychologist = model<PsychologistDTO>('Psychologist', PsychologistSchema);
+const Psychologist = model<PsychologistSchema>(
+  'Psychologist',
+  PsychologistSchema
+);
 
 export default Psychologist;

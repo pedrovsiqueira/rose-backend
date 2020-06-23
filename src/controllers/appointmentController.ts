@@ -1,28 +1,20 @@
 import { Request, Response } from 'express';
-import Appointment from '../models/Appointment';
 import { AppointmentDTO } from '../dtos/AppointmentDTO';
+import { ErrorResponseDTO } from '../dtos/ErrorResponseDTO';
+import Appointment from '../models/Appointment';
 import Patient from '../models/Patient';
 import Psychologist from '../models/Psychologist';
 
-interface ErrorResponse {
-  message: string;
-}
-
-type AppointmentResponse = AppointmentDTO | ErrorResponse;
+type AppointmentResponse = AppointmentDTO | ErrorResponseDTO;
 
 export default class AppointmentController {
   public async create(
     req: Request,
     res: Response
   ): Promise<Response<AppointmentResponse>> {
-    const {
-      startTime,
-      endTime,
-      psychologist,
-      patient,
-    } = req.body as AppointmentDTO;
+    const { startTime, endTime, psychologist, patient } = req.body;
 
-    const appointment = {
+    const newAppointment = {
       startTime,
       endTime,
       psychologist,
@@ -45,7 +37,7 @@ export default class AppointmentController {
 
     try {
       const response = (await Appointment.create(
-        appointment
+        newAppointment
       )) as AppointmentDTO;
 
       const { patient, psychologist } = response;

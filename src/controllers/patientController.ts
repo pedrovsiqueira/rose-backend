@@ -1,20 +1,17 @@
 import { Request, Response } from 'express';
 import { PatientDTO } from '../dtos/PatientDTO';
+import { ErrorResponseDTO } from '../dtos/ErrorResponseDTO';
 import Patient from '../models/Patient';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
-interface ErrorResponse {
-  message: string;
-}
-
-type CreateResponse = PatientDTO | ErrorResponse;
+type PatientResponse = PatientDTO | ErrorResponseDTO;
 
 export default class PatientController {
   public async create(
     req: Request,
     res: Response
-  ): Promise<Response<CreateResponse>> {
+  ): Promise<Response<PatientResponse>> {
     const { email, password } = req.body;
 
     if (!email || !password) {
@@ -46,6 +43,7 @@ export default class PatientController {
 
   public async login(req: Request, res: Response) {
     const { email, password } = req.body;
+
     try {
       const patient = (await Patient.findOne({
         email,
@@ -80,7 +78,7 @@ export default class PatientController {
       );
     } catch (error) {
       console.log(error);
-      res.status(500).json({ message: 'Falha no login' });
+      return res.status(500).json({ message: 'Falha no login' });
     }
   }
 }

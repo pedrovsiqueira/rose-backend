@@ -1,3 +1,6 @@
+import { AppointmentDTO } from './AppointmentDTO';
+import { PsychologistDTO } from './PsychologistDTO';
+
 export interface PatientDTO {
   _id: string;
   name?: string;
@@ -5,7 +8,7 @@ export interface PatientDTO {
   password: string;
   avater?: string;
   date?: string;
-  favPsychologists?: string[];
-  appointments?: string[];
+  favPsychologists?: string[] | PsychologistDTO[];
+  appointments?: string[] | AppointmentDTO[];
   review?: string[];
 }
