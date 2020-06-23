@@ -73,11 +73,13 @@ export default class AppointmentController {
   ): Promise<Response<AppointmentResponse>> {
     try {
       const response = await Appointment.find({});
+
       if (response.length === 0) {
         return res
           .status(200)
           .json({ message: 'Nenhum agendamento encontrado' });
       }
+
       return res.status(200).json(response);
     } catch (error) {
       console.log(error);
@@ -92,6 +94,7 @@ export default class AppointmentController {
     res: Response
   ): Promise<Response<AppointmentResponse>> {
     const { id } = req.params;
+
     try {
       const response = await Appointment.findById(id);
       return res.status(200).json(response);

@@ -1,19 +1,14 @@
 import { Request, Response } from 'express';
+import { PatientDTO } from '../dtos/PatientDTO';
 import Patient from '../models/Patient';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
-interface Fail {
+interface ErrorResponse {
   message: string;
 }
 
-interface Patient {
-  _id: string;
-  email: string;
-  password: string;
-}
-
-type CreateResponse = Patient | Fail;
+type CreateResponse = PatientDTO | ErrorResponse;
 
 export default class PatientController {
   public async create(
@@ -52,9 +47,9 @@ export default class PatientController {
   public async login(req: Request, res: Response) {
     const { email, password } = req.body;
     try {
-      const patient: any = await Patient.findOne({
+      const patient = (await Patient.findOne({
         email,
-      });
+      })) as PatientDTO;
 
       const isMatch = await bcrypt.compare(password, patient.password);
       if (!isMatch) {
