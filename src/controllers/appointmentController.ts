@@ -4,18 +4,11 @@ import { AppointmentDTO } from '../dtos/AppointmentDTO';
 import Patient from '../models/Patient';
 import Psychologist from '../models/Psychologist';
 
-interface Fail {
+interface ErrorResponse {
   message: string;
 }
 
-interface Appointment {
-  _id: String;
-  startTime: Date;
-  endTime: Date;
-  psychologist: Object;
-}
-
-type AppointmentResponse = Appointment | Fail;
+type AppointmentResponse = AppointmentDTO | ErrorResponse;
 
 export default class AppointmentController {
   public async create(
@@ -51,7 +44,20 @@ export default class AppointmentController {
     }
 
     try {
-      const response = await Appointment.create(appointment);
+      const response = (await Appointment.create(
+        appointment
+      )) as AppointmentDTO;
+
+      const { patient, psychologist } = response;
+
+      await Patient.findByIdAndUpdate(patient, {
+        $push: { appointments: response },
+      });
+
+      await Psychologist.findByIdAndUpdate(psychologist, {
+        $push: { appointments: response },
+      });
+
       return res.status(201).json(response);
     } catch (error) {
       console.log(error);

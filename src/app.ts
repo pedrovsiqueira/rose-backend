@@ -2,6 +2,7 @@ require('dotenv').config();
 
 import express from 'express';
 import bodyParser from 'body-parser';
+import logger from 'morgan';
 import db from './database/connection';
 import patientRoutes from '../src/routes/patient.routes';
 import psychologistRoutes from '../src/routes/psychologist.routes';
@@ -11,6 +12,7 @@ const app = express();
 
 db();
 
+app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
