@@ -1,30 +1,24 @@
 import { Request, Response } from 'express';
+import { AppointmentDTO } from '../dtos/AppointmentDTO';
+import { ErrorResponseDTO } from '../dtos/ErrorResponseDTO';
 import Appointment from '../models/Appointment';
+import Patient from '../models/Patient';
+import Psychologist from '../models/Psychologist';
 
-interface Fail {
-  message: string;
-}
-
-interface Appointment {
-  _id: String;
-  startTime: Date;
-  endTime: Date;
-  psychologist: Object;
-}
-
-type AppointmentResponse = Appointment | Fail;
+type AppointmentResponse = AppointmentDTO | ErrorResponseDTO;
 
 export default class AppointmentController {
   public async create(
     req: Request,
     res: Response
   ): Promise<Response<AppointmentResponse>> {
-    const { startTime, endTime, psychologist } = req.body;
+    const { startTime, endTime, psychologist, patient } = req.body;
 
-    const appointment = {
+    const newAppointment = {
       startTime,
       endTime,
       psychologist,
+      patient,
     };
 
     if (!startTime || !endTime) {
@@ -34,11 +28,28 @@ export default class AppointmentController {
     }
 
     if (!psychologist) {
-      return res.status(500).json({ message: 'Erro mental do psicólogo' });
+      return res.status(500).json({ message: 'Psicólogo não especificado' });
+    }
+
+    if (!patient) {
+      return res.status(500).json({ message: 'Paciente não especificado' });
     }
 
     try {
-      const response = await Appointment.create(appointment);
+      const response = (await Appointment.create(
+        newAppointment
+      )) as AppointmentDTO;
+
+      const { patient, psychologist } = response;
+
+      await Patient.findByIdAndUpdate(patient, {
+        $push: { appointments: response },
+      });
+
+      await Psychologist.findByIdAndUpdate(psychologist, {
+        $push: { appointments: response },
+      });
+
       return res.status(201).json(response);
     } catch (error) {
       console.log(error);
@@ -54,11 +65,13 @@ export default class AppointmentController {
   ): Promise<Response<AppointmentResponse>> {
     try {
       const response = await Appointment.find({});
+
       if (response.length === 0) {
         return res
           .status(200)
           .json({ message: 'Nenhum agendamento encontrado' });
       }
+
       return res.status(200).json(response);
     } catch (error) {
       console.log(error);
@@ -73,6 +86,7 @@ export default class AppointmentController {
     res: Response
   ): Promise<Response<AppointmentResponse>> {
     const { id } = req.params;
+
     try {
       const response = await Appointment.findById(id);
       return res.status(200).json(response);
@@ -89,11 +103,22 @@ export default class AppointmentController {
     res: Response
   ): Promise<Response<AppointmentResponse>> {
     const { id } = req.params;
+
     try {
-      const response = await Appointment.findByIdAndDelete(id);
+      const { patient, psychologist } = (await Appointment.findByIdAndDelete(
+        id
+      )) as AppointmentDTO;
+
+      await Patient.findByIdAndUpdate(patient, {
+        $pull: { appointments: id },
+      });
+      await Psychologist.findByIdAndUpdate(psychologist, {
+        $pull: { appointments: id },
+      });
+
       return res
         .status(202)
-        .json({ message: `agendamento excluido com sucesso` });
+        .json({ message: 'agendamento excluido com sucesso' });
     } catch (error) {
       console.log(error);
       return res.status(500).json({

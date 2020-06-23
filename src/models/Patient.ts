@@ -1,6 +1,7 @@
 import { Schema, Document, model } from 'mongoose';
+import { PatientDTO } from '../dtos/PatientDTO';
 
-type PatientDTO = Document & {};
+type PatientSchema = Document & PatientDTO;
 
 const PatientSchema = new Schema(
   {
@@ -25,7 +26,7 @@ const PatientSchema = new Schema(
     },
     //todo => Review later
     date: {
-      type: String,
+      type: Date,
       default: Date(),
     },
     favPsychologists: [
@@ -52,6 +53,6 @@ const PatientSchema = new Schema(
   }
 );
 
-const Patient = model<PatientDTO>('Patient', PatientSchema);
+const Patient = model<PatientSchema>('Patient', PatientSchema);
 
 export default Patient;

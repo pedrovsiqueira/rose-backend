@@ -1,25 +1,16 @@
 import { Request, Response } from 'express';
+import { PsychologistDTO } from '../dtos/PsychologistDTO';
+import { ErrorResponseDTO } from '../dtos/ErrorResponseDTO';
 import Psychologist from '../models/Psychologist';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
-interface Fail {
-  message: string;
-}
-
-interface Psychologist {
-  _id: string;
-  email: string;
-  password: string;
-  crp: string;
-}
-
-type MainResponse = {
-  user: Psychologist;
+interface SuccessResponse {
+  user: PsychologistDTO;
   token?: string;
-};
+}
 
-type PsychologistResponse = MainResponse | Fail;
+type PsychologistResponse = SuccessResponse | ErrorResponseDTO;
 
 export default class PsychologistController {
   public async create(
@@ -106,7 +97,10 @@ export default class PsychologistController {
   ): Promise<Response<PsychologistResponse>> {
     const { id } = req.params;
     try {
-      const response = await Psychologist.findById(id).select('-password');
+      const response = (await Psychologist.findById(id).select(
+        '-password'
+      )) as PsychologistDTO;
+
       return res.status(200).json(response);
     } catch (error) {
       console.log(error);
@@ -119,7 +113,9 @@ export default class PsychologistController {
   public async login(req: Request, res: Response) {
     const { email, password } = req.body;
     try {
-      const psychologist: any = await Psychologist.findOne({ email });
+      const psychologist = (await Psychologist.findOne({
+        email,
+      })) as PsychologistDTO;
 
       const isMatch = await bcrypt.compare(password, psychologist.password);
       if (!isMatch) {
