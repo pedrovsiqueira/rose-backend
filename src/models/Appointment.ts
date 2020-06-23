@@ -1,6 +1,7 @@
 import { Schema, Document, model } from 'mongoose';
+import { AppointmentDTO } from '../dtos/AppointmentDTO';
 
-type AppointmentDTO = Document & {};
+type AppointmentSchema = Document & AppointmentDTO;
 
 const AppointmentSchema = new Schema(
   {
@@ -35,6 +36,6 @@ const AppointmentSchema = new Schema(
   }
 );
 
-const Appointment = model<AppointmentDTO>('Appointment', AppointmentSchema);
+const Appointment = model<AppointmentSchema>('Appointment', AppointmentSchema);
 
 export default Appointment;
