@@ -14,9 +14,9 @@ export interface PsychologistDTO {
   avatar?: string;
   whatsapp?: string;
   workingHours?: IWorkingHours;
-  education?: string;
-  specialties?: string;
-  experience?: string;
+  education?: string[];
+  specialties?: string[];
+  experience?: string[];
   price?: number;
   virtualRoom?: string;
   longDescription?: string;
