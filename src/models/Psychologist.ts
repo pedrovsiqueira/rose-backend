@@ -32,10 +32,10 @@ const PsychologistSchema = new Schema(
     },
     workingHours: {
       startTime: {
-        type: Date,
+        type: String,
       },
       endTime: {
-        type: Date,
+        type: String,
       },
     },
     education: [
