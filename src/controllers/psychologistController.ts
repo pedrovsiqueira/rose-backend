@@ -75,8 +75,34 @@ export default class PsychologistController {
     req: Request,
     res: Response
   ): Promise<Response<PsychologistResponse>> {
+    /**
+     * It's important to use queries with portuguese feeling filters
+     * and use underline between words
+     */
+    const { query } = req;
+    const filters = [];
+
+    /**
+     * Get an array with all queries provided
+     */
+    const feelingsFilter = Object.keys(query);
+
+    for (const feeling of feelingsFilter) {
+      const regex = new RegExp(feeling.replace('_', ' '), 'i'); // Substitute underline for space
+      filters.push(regex);
+    }
+
+    /**
+     * Building query
+     */
+    const dbQuery = filters.length
+      ? {
+          specialties: { $all: filters },
+        }
+      : {};
+
     try {
-      const response = await Psychologist.find({}).select('-password');
+      const response = await Psychologist.find(dbQuery).select('-password');
       if (response.length === 0) {
         return res
           .status(200)
