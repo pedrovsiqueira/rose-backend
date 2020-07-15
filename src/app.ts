@@ -7,6 +7,7 @@ import db from './database/connection';
 import patientRoutes from '../src/routes/patient.routes';
 import psychologistRoutes from '../src/routes/psychologist.routes';
 import appointmentsRoutes from '../src/routes/appointments.routes';
+import cors from 'cors';
 
 const app = express();
 
@@ -15,6 +16,7 @@ db();
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors());
 
 app.use('/patient', patientRoutes);
 app.use('/psychologist', psychologistRoutes);
