@@ -47,11 +47,6 @@ const PatientSchema = new Schema(
         ref: 'Review',
       },
     ],
-    healthInsurance: [
-      {
-        type: String,
-      },
-    ],
   },
   {
     timestamps: true,

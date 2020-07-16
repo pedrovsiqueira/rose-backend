@@ -78,6 +78,7 @@ const data = [
       'Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto magni dolores sequi repellendus ab fugiat! Dolore nemo suscipit corporis provident asperiores commodi, officia molestias enim aut eligendi recusandae aliquam quaerat! Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto magni dolores sequi repellendus ab fugiat! Dolore nemo suscipit corporis provident asperiores commodi, officia molestias enim aut eligendi recusandae aliquam quaerat! Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto magni dolores sequi repellendus ab fugiat! Dolore nemo suscipit corporis provident asperiores commodi, officia molestias enim aut eligendi recusandae aliquam quaerat! Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto magni dolores sequi repellendus ab fugiat! Dolore nemo suscipit corporis provident asperiores commodi, officia molestias enim aut eligendi recusandae aliquam quaerat!',
     shortDescription:
       'Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto magni dolores sequi repellendus ab fugiat! Dolore nemo suscipit corporis provident asperiores commodi, officia molestias enim aut eligendi recusandae aliquam quaerat!',
+    healthInsurance: ['Amil, Unimed'],
   },
 ];
 (async () => {
