@@ -23,4 +23,5 @@ export interface PsychologistDTO {
   shortDescription?: string;
   appointments?: string[] | AppointmentDTO[];
   reviews?: string[];
+  healthInsurance?: string[];
 }
