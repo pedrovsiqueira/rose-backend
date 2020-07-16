@@ -12,10 +12,10 @@ export default class PatientController {
     req: Request,
     res: Response
   ): Promise<Response<PatientResponse>> {
-    const { email, password } = req.body;
+    const { email, password, name } = req.body;
 
-    if (!email || !password) {
-      return res.status(400).json({ message: 'Email ou senha não informados' });
+    if (!email || !password || !name) {
+      return res.status(400).json({ message: 'Dados incompletos' });
     }
 
     if (password.length < 6) {
@@ -30,6 +30,7 @@ export default class PatientController {
     const newUser = {
       email,
       password: hash,
+      name,
     };
 
     try {
