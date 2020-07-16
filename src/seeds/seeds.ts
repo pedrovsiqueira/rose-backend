@@ -1,10 +1,11 @@
 import db from '../database/connection';
 import Psychologist from '../models/Psychologist';
+import Patient from '../models/Patient';
 require('dotenv').config();
 
 db();
 
-const data = [
+const professionals = [
   {
     name: 'Jose Jorge',
     email: 'jose@jorge.com',
@@ -81,7 +82,19 @@ const data = [
     healthInsurance: ['Amil, Unimed'],
   },
 ];
+
+const patients = {
+  name: 'João das Neves',
+  email: 'johnsnow@winterfell.com',
+  password: '123456',
+};
+
 (async () => {
-  const createdUsers = await Psychologist.create(data);
-  console.log(createdUsers);
+  try {
+    await Psychologist.create(professionals);
+    await Patient.create(patients);
+    console.log('Ok, seeds created');
+  } catch (error) {
+    console.error(error);
+  }
 })();
