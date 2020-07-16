@@ -6,7 +6,8 @@
   "author": "Pedro Siqueira <pedro.v.siqueira@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "ts-node-dev --inspect --transpileOnly --ignore-watch node_modules src/server.ts"
+    "dev": "ts-node-dev --inspect --transpileOnly --ignore-watch node_modules src/server.ts",
+    "seeds": "node_modules/.bin/ts-node src/seeds/seeds.ts"
   },
   "devDependencies": {
     "@types/mongoose": "^5.7.24",

@@ -78,6 +78,11 @@ const PsychologistSchema = new Schema(
         ref: 'Review',
       },
     ],
+    healthInsurance: [
+      {
+        type: String,
+      },
+    ],
   },
   {
     timestamps: true,
