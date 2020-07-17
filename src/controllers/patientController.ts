@@ -82,4 +82,16 @@ export default class PatientController {
       return res.status(500).json({ message: 'Falha no login' });
     }
   }
+
+  public async find(req: Request, res: Response) {
+    const { id } = req.params;
+
+    try {
+      const patient = await Patient.findById(id).select('-password');
+      res.status(200).json(patient);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Falha no servidor' });
+    }
+  }
 }
