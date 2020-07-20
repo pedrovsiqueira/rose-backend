@@ -27,6 +27,7 @@ export default class ReviewController {
       await Review.create(review);
       return res.status(201).json(review);
     } catch (error) {
+      console.log(error);
       return res
         .status(500)
         .json({ message: 'Falha na gravação da avaliação' });
