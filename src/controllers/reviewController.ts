@@ -33,4 +33,29 @@ export default class ReviewController {
         .json({ message: 'Falha na gravação da avaliação' });
     }
   }
+
+  public async show(
+    req: Request,
+    res: Response
+  ): Promise<Response> {
+    const { id } = req.params;
+
+    if (!id) {
+      return res.status(400).json({ message: 'Dados insuficientes' });
+    }
+
+    try {
+      const reviews = await Review
+        .find({ psychologist: id })
+        .populate('patient', { _id: 0, name: 1 });
+
+      return res.status(200).json(reviews);
+    } catch (error) {
+      console.log(error);
+
+      return res
+        .status(500)
+        .json({ message: 'Falha ao obter avaliações' });
+    }
+  }
 }
