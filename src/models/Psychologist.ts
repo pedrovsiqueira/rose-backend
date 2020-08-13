@@ -83,6 +83,41 @@ const PsychologistSchema = new Schema(
         type: String,
       },
     ],
+    professionalType: {
+      type: String,
+      enum: ['psicologe', 'psiquiatra'],
+    },
+    genderIdentity: {
+      type: String,
+      enum: [
+        'mulherCis',
+        'homemCis',
+        'mulherTrans',
+        'homemTrans',
+        'naoBinario',
+      ],
+    },
+    community: {
+      type: String,
+      enum: [
+        'lesbica',
+        'gay',
+        'bissexual',
+        'transgenero',
+        'transsexual',
+        'twoSpirit',
+        'queer',
+        'intersex',
+        'assexual',
+        'pansexual',
+        'naoBinario',
+        'outros',
+      ],
+    },
+    ethnicity: {
+      type: String,
+      enum: ['asiatica', 'branca', 'indigena', 'negra', 'outras'],
+    },
   },
   {
     timestamps: true,
