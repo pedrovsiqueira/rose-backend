@@ -46,9 +46,9 @@ export default class ReviewController {
     }
 
     try {
-      const reviews = await Review.find({
-        psychologist: id,
-      }).populate('patient', { _id: 0, name: 1 });
+      const reviews = await Review
+        .find({ psychologist: id })
+        .populate('patient', { name: 1 });
 
       return res.status(200).json(reviews);
     } catch (error) {
