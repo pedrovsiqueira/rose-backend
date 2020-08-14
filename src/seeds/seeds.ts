@@ -1,6 +1,5 @@
 import db from '../database/connection';
 import Psychologist from '../models/Psychologist';
-import Patient from '../models/Patient';
 require('dotenv').config();
 
 db();
@@ -42,6 +41,10 @@ const professionals = [
       'Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto magni dolores sequi repellendus ab fugiat! Dolore nemo suscipit corporis provident asperiores commodi, officia molestias enim aut eligendi recusandae aliquam quaerat! Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto magni dolores sequi repellendus ab fugiat! Dolore nemo suscipit corporis provident asperiores commodi, officia molestias enim aut eligendi recusandae aliquam quaerat! Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto magni dolores sequi repellendus ab fugiat! Dolore nemo suscipit corporis provident asperiores commodi, officia molestias enim aut eligendi recusandae aliquam quaerat! Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto magni dolores sequi repellendus ab fugiat! Dolore nemo suscipit corporis provident asperiores commodi, officia molestias enim aut eligendi recusandae aliquam quaerat!',
     shortDescription:
       'Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto magni dolores sequi repellendus ab fugiat! Dolore nemo suscipit corporis provident asperiores commodi, officia molestias enim aut eligendi recusandae aliquam quaerat!',
+    professionalType: 'psiquiatra',
+    genderIdentity: 'homemTrans',
+    community: 'gay',
+    ethnicity: 'branca',
   },
   {
     name: 'Fernanda Rabino',
@@ -79,20 +82,17 @@ const professionals = [
       'Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto magni dolores sequi repellendus ab fugiat! Dolore nemo suscipit corporis provident asperiores commodi, officia molestias enim aut eligendi recusandae aliquam quaerat! Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto magni dolores sequi repellendus ab fugiat! Dolore nemo suscipit corporis provident asperiores commodi, officia molestias enim aut eligendi recusandae aliquam quaerat! Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto magni dolores sequi repellendus ab fugiat! Dolore nemo suscipit corporis provident asperiores commodi, officia molestias enim aut eligendi recusandae aliquam quaerat! Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto magni dolores sequi repellendus ab fugiat! Dolore nemo suscipit corporis provident asperiores commodi, officia molestias enim aut eligendi recusandae aliquam quaerat!',
     shortDescription:
       'Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto magni dolores sequi repellendus ab fugiat! Dolore nemo suscipit corporis provident asperiores commodi, officia molestias enim aut eligendi recusandae aliquam quaerat!',
-    healthInsurance: ['Amil, Unimed'],
+    healthInsurance: ['Amil', 'Unimed'],
+    professionalType: 'psicologe',
+    genderIdentity: 'mulherCis',
+    community: 'bissexual',
+    ethnicity: 'asiatica',
   },
 ];
-
-const patients = {
-  name: 'João das Neves',
-  email: 'johnsnow@winterfell.com',
-  password: '123456',
-};
 
 (async () => {
   try {
     await Psychologist.create(professionals);
-    await Patient.create(patients);
     console.log('Ok, seeds created');
   } catch (error) {
     console.error(error);
