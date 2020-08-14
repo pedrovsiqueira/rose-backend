@@ -1,4 +1,5 @@
 import { AppointmentDTO } from './AppointmentDTO';
+import { Document } from 'mongoose';
 
 interface IWorkingHours {
   startTime: string;
@@ -22,6 +23,6 @@ export interface PsychologistDTO {
   longDescription?: string;
   shortDescription?: string;
   appointments?: string[] | AppointmentDTO[];
-  reviews?: string[];
+  reviews?: string[] | Document[];
   healthInsurance?: string[];
 }

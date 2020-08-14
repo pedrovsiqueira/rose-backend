@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import Review from '../models/Review';
 import { ErrorResponseDTO } from '../dtos/ErrorResponseDTO';
 import { ReviewDTO } from '../dtos/ReviewDTO';
+import Psychologist from '../models/Psychologist';
 
 type ReviewResponse = ReviewDTO | ErrorResponseDTO;
 
@@ -24,7 +25,10 @@ export default class ReviewController {
     };
 
     try {
-      await Review.create(review);
+      const createdReview = await Review.create(review);
+      await Psychologist.findByIdAndUpdate(psychologistId, {
+        $push: { reviews: createdReview },
+      });
       return res.status(201).json(review);
     } catch (error) {
       console.log(error);
@@ -34,10 +38,7 @@ export default class ReviewController {
     }
   }
 
-  public async show(
-    req: Request,
-    res: Response
-  ): Promise<Response> {
+  public async show(req: Request, res: Response): Promise<Response> {
     const { id } = req.params;
 
     if (!id) {
@@ -53,9 +54,7 @@ export default class ReviewController {
     } catch (error) {
       console.log(error);
 
-      return res
-        .status(500)
-        .json({ message: 'Falha ao obter avaliações' });
+      return res.status(500).json({ message: 'Falha ao obter avaliações' });
     }
   }
 }

@@ -17,7 +17,15 @@ export default class PsychologistController {
     req: Request,
     res: Response
   ): Promise<Response<PsychologistResponse> | undefined> {
-    const { email, password, crp } = req.body;
+    const {
+      email,
+      password,
+      crp,
+      professionalType,
+      genderIdentity,
+      community,
+      ethnicity,
+    } = req.body;
 
     if (!email || !password) {
       return res.status(400).json({ message: 'Email ou senha não informados' });
@@ -40,6 +48,10 @@ export default class PsychologistController {
       email,
       password: hash,
       crp,
+      professionalType,
+      genderIdentity,
+      community,
+      ethnicity,
     };
 
     try {

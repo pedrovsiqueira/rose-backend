@@ -1,5 +1,6 @@
 import { AppointmentDTO } from './AppointmentDTO';
 import { PsychologistDTO } from './PsychologistDTO';
+import { Document } from 'mongoose';
 
 export interface PatientDTO {
   _id: string;
@@ -10,5 +11,5 @@ export interface PatientDTO {
   date?: string;
   favPsychologists?: string[] | PsychologistDTO[];
   appointments?: string[] | AppointmentDTO[];
-  review?: string[];
+  review?: string[] | Document[];
 }
