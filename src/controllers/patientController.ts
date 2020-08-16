@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
 import Patient from '../models/Patient';
+import { JWT_SECRET } from '../configs/env';
 
 export default class PatientController {
   public async create(request: Request, response: Response): Promise<Response> {
@@ -60,7 +61,7 @@ export default class PatientController {
       };
 
       const token = jwt.sign(
-        payload, `${process.env.JWT_SECRET}`, { expiresIn: 8640000000 },
+        payload, JWT_SECRET, { expiresIn: 8640000000 },
       );
 
       return response.status(200).json({

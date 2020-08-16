@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
+import { JWT_SECRET } from '../configs/env';
 
 interface ITokenPayload {
   iat: number;
@@ -27,7 +28,7 @@ export default (request: Request, response: Response, next: NextFunction) => {
   }
 
   try {
-    const decoded = jwt.verify(token, `${process.env.JWT_SECRET}`);
+    const decoded = jwt.verify(token, JWT_SECRET);
 
     const { id } = decoded as ITokenPayload;
 

@@ -1,10 +1,11 @@
 import mongoose from 'mongoose';
+import { MONGODB } from '../configs/env';
 
 mongoose.Promise = global.Promise;
 
 const db = mongoose.connection;
 
-mongoose.connect(`${process.env.MONGODB}`, {
+mongoose.connect(MONGODB, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true,

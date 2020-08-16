@@ -1,5 +1,6 @@
+import { PORT } from './configs/env';
 import app from './app';
 
-app.listen(process.env.PORT || 5000, () => {
-  console.log(`🌹 rose is growing on port ${process.env.PORT}`);
+app.listen(PORT || 5000, () => {
+  console.log(`🌹 rose is growing on port ${PORT}`);
 });

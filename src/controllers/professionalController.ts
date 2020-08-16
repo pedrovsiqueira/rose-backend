@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+
+import { JWT_SECRET } from '../configs/env';
 import Professional from '../models/Professional';
 
 export default class ProfessionalController {
@@ -41,7 +43,7 @@ export default class ProfessionalController {
         id: professional._id,
       };
 
-      const token = jwt.sign(payload, `${process.env.JWT_SECRET}`, { expiresIn: 8640000000 });
+      const token = jwt.sign(payload, JWT_SECRET, { expiresIn: 8640000000 });
 
       return response.status(201).json({ professional, token });
     } catch (error) {
@@ -139,7 +141,7 @@ export default class ProfessionalController {
         id: professional._id,
       };
 
-      const token = jwt.sign(payload, `${process.env.JWT_SECRET}`, { expiresIn: 8640000000 });
+      const token = jwt.sign(payload, JWT_SECRET, { expiresIn: 8640000000 });
 
       return response.status(200).json({ professional, token });
     } catch (error) {
