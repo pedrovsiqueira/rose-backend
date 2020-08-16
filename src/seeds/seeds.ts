@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import '../database/connection';
 import Psychologist from '../models/Professional';
 
