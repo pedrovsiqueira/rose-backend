@@ -1,8 +1,5 @@
-import db from '../database/connection';
-import Psychologist from '../models/Psychologist';
-require('dotenv').config();
-
-db();
+import '../database/connection';
+import Psychologist from '../models/Professional';
 
 const professionals = [
   {

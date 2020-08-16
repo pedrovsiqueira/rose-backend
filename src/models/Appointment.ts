@@ -1,7 +1,5 @@
-import { Schema, Document, model } from 'mongoose';
-import { AppointmentDTO } from '../dtos/AppointmentDTO';
-
-type AppointmentSchema = Document & AppointmentDTO;
+import { Schema, model } from 'mongoose';
+import { IAppointment } from '../interfaces/IAppointment';
 
 const AppointmentSchema = new Schema(
   {
@@ -13,29 +11,25 @@ const AppointmentSchema = new Schema(
       type: Date,
       required: true,
     },
-
     psychologist: {
       type: Schema.Types.ObjectId,
       required: true,
       ref: 'Psychologist',
     },
-
     patient: {
       type: Schema.Types.ObjectId,
       ref: 'Patient',
     },
-
     isPaid: {
       type: Boolean,
       default: false,
     },
   },
-
   {
     timestamps: true,
-  }
+  },
 );
 
-const Appointment = model<AppointmentSchema>('Appointment', AppointmentSchema);
+const Appointment = model<IAppointment>('Appointment', AppointmentSchema);
 
 export default Appointment;

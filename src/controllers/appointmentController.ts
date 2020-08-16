@@ -1,127 +1,116 @@
 import { Request, Response } from 'express';
-import { AppointmentDTO } from '../dtos/AppointmentDTO';
-import { ErrorResponseDTO } from '../dtos/ErrorResponseDTO';
+
 import Appointment from '../models/Appointment';
 import Patient from '../models/Patient';
-import Psychologist from '../models/Psychologist';
-
-type AppointmentResponse = AppointmentDTO | ErrorResponseDTO;
+import Psychologist from '../models/Professional';
 
 export default class AppointmentController {
-  public async create(
-    req: Request,
-    res: Response
-  ): Promise<Response<AppointmentResponse>> {
-    const { startTime, endTime, psychologist, patient } = req.body;
-
-    const newAppointment = {
-      startTime,
-      endTime,
-      psychologist,
-      patient,
-    };
+  public async create(request: Request, response: Response): Promise<Response> {
+    const {
+      startTime, endTime, psychologist, patient,
+    } = request.body;
 
     if (!startTime || !endTime) {
-      return res.status(400).json({
+      return response.status(400).json({
         message: 'Por favor, selecione um horário para o agendamento',
       });
     }
 
     if (!psychologist) {
-      return res.status(500).json({ message: 'Psicólogo não especificado' });
+      return response.status(500).json({ message: 'Psicólogo não especificado' });
     }
 
     if (!patient) {
-      return res.status(500).json({ message: 'Paciente não especificado' });
+      return response.status(500).json({ message: 'Paciente não especificado' });
     }
 
     try {
-      const response = (await Appointment.create(
-        newAppointment
-      )) as AppointmentDTO;
+      const appointment = await new Appointment({
+        startTime, endTime, psychologist, patient,
+      }).save();
 
-      const { patient, psychologist } = response;
-
-      await Patient.findByIdAndUpdate(patient, {
-        $push: { appointments: response },
+      await Patient.findByIdAndUpdate(appointment.patient, {
+        $push: { appointments: appointment },
       });
 
-      await Psychologist.findByIdAndUpdate(psychologist, {
-        $push: { appointments: response },
+      await Psychologist.findByIdAndUpdate(appointment.psychologist, {
+        $push: { appointments: appointment },
       });
 
-      return res.status(201).json(response);
+      return response.status(201).json(appointment);
     } catch (error) {
-      console.log(error);
-      return res
+      console.error(error);
+      return response
         .status(500)
         .json({ message: 'Falha na criação do agendamento' });
     }
   }
 
-  public async find(
-    req: Request,
-    res: Response
-  ): Promise<Response<AppointmentResponse>> {
+  public async find(request: Request, response: Response): Promise<Response> {
     try {
-      const response = await Appointment.find({});
+      const appointments = await Appointment.find({});
 
-      if (response.length === 0) {
-        return res
-          .status(200)
-          .json({ message: 'Nenhum agendamento encontrado' });
+      if (appointments.length === 0) {
+        return response.status(200).json({
+          message: 'Nenhum agendamento encontrado',
+        });
       }
 
-      return res.status(200).json(response);
+      return response.status(200).json(appointments);
     } catch (error) {
-      console.log(error);
-      return res.status(500).json({
+      console.error(error);
+      return response.status(500).json({
         message: 'Falha na requisição. Tente novamente',
       });
     }
   }
 
-  public async findById(
-    req: Request,
-    res: Response
-  ): Promise<Response<AppointmentResponse>> {
-    const { id } = req.params;
+  public async findById(request: Request, response: Response): Promise<Response> {
+    const { id } = request.params;
 
     try {
-      const response = await Appointment.findById(id);
-      return res.status(200).json(response);
+      const appointment = await Appointment.findById(id);
+
+      if (!appointment) {
+        return response.status(404).json({
+          message: 'Agendamento não encontrado',
+        });
+      }
+
+      return response.status(200).json(appointment);
     } catch (error) {
-      console.log(error);
-      return res.status(500).json({
+      console.error(error);
+      return response.status(500).json({
         message: 'Falha na requisição. Tente novamente',
       });
     }
   }
 
-  public async delete(
-    req: Request,
-    res: Response
-  ): Promise<Response<AppointmentResponse>> {
-    const { id } = req.params;
+  public async delete(request: Request, response: Response): Promise<Response> {
+    const { id } = request.params;
 
     try {
-      const { patient, psychologist } = (await Appointment.findByIdAndDelete(
-        id
-      )) as AppointmentDTO;
+      const appointment = await Appointment.findByIdAndDelete(id);
 
-      await Patient.findByIdAndUpdate(patient, {
+      if (!appointment) {
+        return response.status(404).json({
+          message: 'Agendamento não encontrado',
+        });
+      }
+
+      await Patient.findByIdAndUpdate(appointment.patient, {
         $pull: { appointments: id },
       });
-      await Psychologist.findByIdAndUpdate(psychologist, {
+      await Psychologist.findByIdAndUpdate(appointment.psychologist, {
         $pull: { appointments: id },
       });
 
-      return res
-        .status(202)
-        .json({ message: 'agendamento excluido com sucesso' });
+      return response.status(202).json({
+        message: 'Agendamento excluído com sucesso',
+      });
     } catch (error) {
-      console.log(error);
-      return res.status(500).json({
+      console.error(error);
+      return response.status(500).json({
         message: 'Falha na requisição. Tente novamente',
       });
     }

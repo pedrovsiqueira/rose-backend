@@ -1,12 +1,11 @@
-import { Schema, Document, model } from 'mongoose';
-import { PsychologistDTO } from '../dtos/PsychologistDTO';
+import { Schema, model } from 'mongoose';
+import { IProfessional } from '../interfaces/IProfessional';
 
-type PsychologistSchema = Document & PsychologistDTO;
-
-const PsychologistSchema = new Schema(
+const ProfessionalSchema = new Schema(
   {
     name: {
       type: String,
+      required: true,
     },
     email: {
       type: String,
@@ -25,6 +24,7 @@ const PsychologistSchema = new Schema(
     },
     whatsapp: {
       type: String,
+      unique: true,
     },
     crp: {
       type: String,
@@ -38,51 +38,14 @@ const PsychologistSchema = new Schema(
         type: String,
       },
     },
-    education: [
-      {
-        type: String,
-      },
-    ],
-    specialties: [
-      {
-        type: String,
-      },
-    ],
-    experience: [
-      {
-        type: String,
-      },
-    ],
-    price: {
-      type: Number,
-    },
-    virtualRoom: {
-      type: String,
-    },
-    longDescription: {
-      type: String,
-    },
-    shortDescription: {
-      type: String,
-    },
-    //todo => Review later
-    appointments: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'Appointment',
-      },
-    ],
-    reviews: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'Review',
-      },
-    ],
-    healthInsurance: [
-      {
-        type: String,
-      },
-    ],
+    education: [String],
+    specialties: [String],
+    experience: [String],
+    price: Number,
+    virtualRoom: String,
+    longDescription: String,
+    shortDescription: String,
+    healthInsurance: [String],
     professionalType: {
       type: String,
       enum: ['psicologe', 'psiquiatra'],
@@ -118,15 +81,27 @@ const PsychologistSchema = new Schema(
       type: String,
       enum: ['asiatica', 'branca', 'indigena', 'negra', 'outras'],
     },
+    appointments: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Appointment',
+      },
+    ],
+    reviews: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Review',
+      },
+    ],
   },
   {
     timestamps: true,
-  }
+  },
 );
 
-const Psychologist = model<PsychologistSchema>(
-  'Psychologist',
-  PsychologistSchema
+const Professional = model<IProfessional>(
+  'Professional',
+  ProfessionalSchema,
 );
 
-export default Psychologist;
+export default Professional;
