@@ -11,18 +11,15 @@ const AppointmentSchema = new Schema(
       type: Date,
       required: true,
     },
-
     psychologist: {
       type: Schema.Types.ObjectId,
       required: true,
       ref: 'Psychologist',
     },
-
     patient: {
       type: Schema.Types.ObjectId,
       ref: 'Patient',
     },
-
     isPaid: {
       type: Boolean,
       default: false,

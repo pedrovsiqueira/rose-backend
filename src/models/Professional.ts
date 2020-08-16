@@ -5,6 +5,7 @@ const ProfessionalSchema = new Schema(
   {
     name: {
       type: String,
+      required: true,
     },
     email: {
       type: String,
@@ -23,6 +24,7 @@ const ProfessionalSchema = new Schema(
     },
     whatsapp: {
       type: String,
+      unique: true,
     },
     crp: {
       type: String,
@@ -36,50 +38,14 @@ const ProfessionalSchema = new Schema(
         type: String,
       },
     },
-    education: [
-      {
-        type: String,
-      },
-    ],
-    specialties: [
-      {
-        type: String,
-      },
-    ],
-    experience: [
-      {
-        type: String,
-      },
-    ],
-    price: {
-      type: Number,
-    },
-    virtualRoom: {
-      type: String,
-    },
-    longDescription: {
-      type: String,
-    },
-    shortDescription: {
-      type: String,
-    },
-    appointments: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'Appointment',
-      },
-    ],
-    reviews: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'Review',
-      },
-    ],
-    healthInsurance: [
-      {
-        type: String,
-      },
-    ],
+    education: [String],
+    specialties: [String],
+    experience: [String],
+    price: Number,
+    virtualRoom: String,
+    longDescription: String,
+    shortDescription: String,
+    healthInsurance: [String],
     professionalType: {
       type: String,
       enum: ['psicologe', 'psiquiatra'],
@@ -115,6 +81,18 @@ const ProfessionalSchema = new Schema(
       type: String,
       enum: ['asiatica', 'branca', 'indigena', 'negra', 'outras'],
     },
+    appointments: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Appointment',
+      },
+    ],
+    reviews: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Review',
+      },
+    ],
   },
   {
     timestamps: true,
