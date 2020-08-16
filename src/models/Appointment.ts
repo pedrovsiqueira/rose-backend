@@ -1,7 +1,5 @@
-import { Schema, Document, model } from 'mongoose';
-import { AppointmentDTO } from '../dtos/AppointmentDTO';
-
-type AppointmentSchema = Document & AppointmentDTO;
+import { Schema, model } from 'mongoose';
+import { IAppointment } from '../interfaces/IAppointment';
 
 const AppointmentSchema = new Schema(
   {
@@ -30,12 +28,11 @@ const AppointmentSchema = new Schema(
       default: false,
     },
   },
-
   {
     timestamps: true,
-  }
+  },
 );
 
-const Appointment = model<AppointmentSchema>('Appointment', AppointmentSchema);
+const Appointment = model<IAppointment>('Appointment', AppointmentSchema);
 
 export default Appointment;

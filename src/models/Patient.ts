@@ -1,7 +1,5 @@
-import { Schema, Document, model } from 'mongoose';
-import { PatientDTO } from '../dtos/PatientDTO';
-
-type PatientSchema = Document & PatientDTO;
+import { Schema, model } from 'mongoose';
+import { IPatient } from '../interfaces/IPatient';
 
 const PatientSchema = new Schema(
   {
@@ -24,7 +22,6 @@ const PatientSchema = new Schema(
       type: String,
       default: '',
     },
-    //todo => Review later
     date: {
       type: Date,
       default: Date(),
@@ -50,9 +47,9 @@ const PatientSchema = new Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
-const Patient = model<PatientSchema>('Patient', PatientSchema);
+const Patient = model<IPatient>('Patient', PatientSchema);
 
 export default Patient;

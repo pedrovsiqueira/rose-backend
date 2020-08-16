@@ -1,9 +1,7 @@
-import { Schema, Document, model } from 'mongoose';
-import { PsychologistDTO } from '../dtos/PsychologistDTO';
+import { Schema, model } from 'mongoose';
+import { IProfessional } from '../interfaces/IProfessional';
 
-type PsychologistSchema = Document & PsychologistDTO;
-
-const PsychologistSchema = new Schema(
+const ProfessionalSchema = new Schema(
   {
     name: {
       type: String,
@@ -65,7 +63,6 @@ const PsychologistSchema = new Schema(
     shortDescription: {
       type: String,
     },
-    //todo => Review later
     appointments: [
       {
         type: Schema.Types.ObjectId,
@@ -121,12 +118,12 @@ const PsychologistSchema = new Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
-const Psychologist = model<PsychologistSchema>(
-  'Psychologist',
-  PsychologistSchema
+const Professional = model<IProfessional>(
+  'Professional',
+  ProfessionalSchema,
 );
 
-export default Psychologist;
+export default Professional;

@@ -1,6 +1,5 @@
-import { Schema, Document, model } from 'mongoose';
-
-type ReviewDTO = Document & {};
+import { Schema, model } from 'mongoose';
+import { IReview } from '../interfaces/IReview';
 
 const ReviewSchema = new Schema(
   {
@@ -13,24 +12,21 @@ const ReviewSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'Patient',
     },
-
     rate: {
       type: Number,
       required: true,
       min: 1,
       max: 5,
     },
-
     description: {
       type: String,
     },
   },
-
   {
     timestamps: true,
-  }
+  },
 );
 
-const Review = model<ReviewDTO>('Review', ReviewSchema);
+const Review = model<IReview>('Review', ReviewSchema);
 
 export default Review;
