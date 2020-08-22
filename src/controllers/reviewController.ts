@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { isValidObjectId } from 'mongoose';
 import Review from '../models/Review';
-import Psychologist from '../models/Professional';
+import Professional from '../models/Professional';
 
 export default class ReviewController {
   public async create(request: Request, response: Response): Promise<Response> {
@@ -23,7 +23,7 @@ export default class ReviewController {
         description,
       }).save();
 
-      await Psychologist.findByIdAndUpdate(psychologistId, {
+      await Professional.findByIdAndUpdate(psychologistId, {
         $push: { reviews: review },
       });
 
