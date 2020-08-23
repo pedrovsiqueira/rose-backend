@@ -1,5 +1,5 @@
 import '../database/connection';
-import Psychologist from '../models/Professional';
+import Professional from '../models/Professional';
 
 const professionals = [
   {
@@ -89,7 +89,7 @@ const professionals = [
 
 (async () => {
   try {
-    await Psychologist.create(professionals);
+    await Professional.create(professionals);
     console.log('Ok, seeds created');
   } catch (error) {
     console.error(error);

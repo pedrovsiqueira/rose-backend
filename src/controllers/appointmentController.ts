@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 
 import Appointment from '../models/Appointment';
 import Patient from '../models/Patient';
-import Psychologist from '../models/Professional';
+import Professional from '../models/Professional';
 
 export default class AppointmentController {
   public async create(request: Request, response: Response): Promise<Response> {
@@ -33,7 +33,7 @@ export default class AppointmentController {
         $push: { appointments: appointment },
       });
 
-      await Psychologist.findByIdAndUpdate(appointment.psychologist, {
+      await Professional.findByIdAndUpdate(appointment.psychologist, {
         $push: { appointments: appointment },
       });
 
@@ -101,7 +101,7 @@ export default class AppointmentController {
       await Patient.findByIdAndUpdate(appointment.patient, {
         $pull: { appointments: id },
       });
-      await Psychologist.findByIdAndUpdate(appointment.psychologist, {
+      await Professional.findByIdAndUpdate(appointment.psychologist, {
         $pull: { appointments: id },
       });
 
